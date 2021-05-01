@@ -32,6 +32,6 @@ const AudioPlayer = () => {
       soundPlayer.play(note);
     }
   };
-  return Player
+  return Player;
 }
 export default AudioPlayer;

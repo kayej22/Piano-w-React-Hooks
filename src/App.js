@@ -1,14 +1,13 @@
 import React, { useEffect } from "react";
-import './App.css';
-
-
+import "./App.css";
+import AudioPlayer from "./AudioPlayer";
 
 function App() {
   const audioPlayer = AudioPlayer();
 
   useEffect(() => {
     audioPlayer.setInstrument("acoustic_grand_piano");
-  }, []);
+  }, [audioPlayer]);
 
   const handleClick = () => {
     audioPlayer.playNote("C4");
@@ -19,6 +18,6 @@ function App() {
       <button onClick={handleClick}>Play</button>
     </div>
   );
-  
 }
+
 export default App;
