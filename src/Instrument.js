@@ -40,12 +40,16 @@ const Instrument = ({
             isNotePlaying: state.notesPlaying.includes(note),
             startPlayingNote: () => onPlayNoteStart(note),
             stopPlayingNote: () => onPlayNoteEnd(note),
+            // eslint-disable-next-line no-undef
             keyboardShortcut: getKeyboardShortcutsForNote(keyboardMap, note) 
           })}
         </Fragment>
       );
     })}
-      <InstrumentAudio />
+      <InstrumentAudio
+      instrumentName={instrumentName}
+      notes={state.notesPlaying} 
+    />
     </Fragment>
   );
 };
