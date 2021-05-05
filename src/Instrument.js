@@ -1,7 +1,12 @@
 import React, { Fragment, useEffect, useState } from "react";
+import isAccidentalNote from "./utils/isAccidentalNote"
+import { getKeyboardShortcutsForNote } from "./utils/getKeyboardShortcutsForNote";
 import InstrumentAudio from "./Keyboard/InstrumentAudio"
 import getNotesBetween from "./utils/getNotesBetween";
-import isAccidentalNote from "./utils/isAccidentalNote"
+
+const isRegularKey = event => {
+  return !event.ctrlKey && !event.metaKey && !event.shiftKey;
+};
 
 const Instrument = ({ 
   instrumentName,
@@ -19,6 +24,7 @@ const Instrument = ({
   useEffect (() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNoteFromKeyboardKey = keyboardKey => {
@@ -82,7 +88,6 @@ const Instrument = ({
             isNotePlaying: state.notesPlaying.includes(note),
             startPlayingNote: () => onPlayNoteStart(note),
             stopPlayingNote: () => onPlayNoteEnd(note),
-            // eslint-disable-next-line no-undef
             keyboardShortcut: getKeyboardShortcutsForNote(keyboardMap, note) 
           })}
         </Fragment>
