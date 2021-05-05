@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import InstrumentAudio from "./Keyboard/InstrumentAudio"
 import getNotesBetween from "./utils/getNotesBetween";
 import isAccidentalNote from "./utils/isAccidentalNote"
@@ -16,6 +16,46 @@ const Instrument = ({
     notesPlaying: []
   });
 
+  useEffect (() => {
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+  }, []);
+
+  const getNoteFromKeyboardKey = keyboardKey => {
+    return keyboardMap[keyboardKey.toUpperCase()];
+  };
+
+  const handleKeyDown = e => {
+    // eslint-disable-next-line no-undef
+    if (isRegularKey(e) && !e.repeat) {
+      const note = getNoteFromKeyboardKey(e.key);
+      if (note) {
+        setState({
+          ...state,
+          notesPlaying: state.notesPlaying.filter(
+            notePlaying => notePlaying !== note 
+          )
+        })
+      }
+    }
+  }
+
+  const handleKeyUp = e => {
+    // eslint-disable-next-line no-undef
+    if (isRegularKey(e) && !e.repeat) {
+      const note = getNoteFromKeyboardKey(e.key);
+      if (note) {
+        setState({
+          ...state,
+          notesPlaying: state.notesPlaying.filter(
+            notePlaying => notePlaying !== note
+          )
+        })
+      }
+    }
+  }
+
+
   const onPlayNoteStart = note => {
     setState({ ...state, notesPlaying: [...state.notesPlaying, note] });
   };
@@ -29,6 +69,8 @@ const Instrument = ({
     })
   };
   
+
+  // rendering piano keys
   return (
     <Fragment>
       {notes.map(note => {

@@ -17,6 +17,7 @@ const AudioPlayer = () => {
 
   // soundPlayer
   let soundPlayer = NullSoundFontPlayer;
+  
   // setInstrument
   const Player = {
     setInstrument(instrumentName) {
