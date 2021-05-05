@@ -1,31 +1,26 @@
-// eslint-disable-next-line no-unused-vars
+/*jshint esversion: 6 */
 import React, { useEffect, useState } from "react";
-import AudioPlayer from "../src/AudioPlayer";
+import AudioPlayer from "./AudioPlayer";
 
 const InstrumentAudio = ({ instrumentName, notes }) => {
   const [instrumentPlayer, setInstrumentPlayer] = useState(null);
-
   useEffect(() => {
     setInstrumentPlayer(AudioPlayer());
   }, []);
 
   useEffect(() => {
     if (instrumentPlayer) {
-      setInstrumentPlayer();
+      setInstrument();
       playNotes();
     }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [instrumentPlayer]);
 
   useEffect(() => {
     if (notes && notes.length > 0) {
       playNotes();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notes]);
 
-  // eslint-disable-next-line no-unused-vars
   const setInstrument = () => {
     instrumentPlayer.setInstrument(instrumentName);
   };

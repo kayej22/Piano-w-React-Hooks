@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */
 import SoundFontPlayer from "soundfont-player";
 import AudioContext from "./AudioContext";
 
@@ -12,25 +13,24 @@ const NullSoundFontPlayer = {
 };
 
 const AudioPlayer = () => {
-  //Audio Context
   const audioContext = AudioContext && new AudioContext();
 
   // soundPlayer
-  let soundPlayer = NullSoundFontPlayer;
+  let soundFPlayer = NullSoundFontPlayer;
   
   // setInstrument
   const Player = {
     setInstrument(instrumentName) {
       SoundFontPlayer.instrument(audioContext, instrumentName)
       .then(soundfontPlayer => {
-        soundPlayer = soundfontPlayer;
+        soundFPlayer = soundfontPlayer;
       })
       .catch(e => {
-        soundPlayer = NullSoundFontPlayer;
+        soundFPlayer = NullSoundFontPlayer;
       });
     },
     playNote(note) {
-      soundPlayer.play(note);
+      soundFPlayer.play(note);
     }
   };
   return Player;

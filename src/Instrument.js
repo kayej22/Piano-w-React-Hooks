@@ -1,30 +1,29 @@
-import React, { Fragment, useEffect, useState } from "react";
-import isAccidentalNote from "./utils/isAccidentalNote"
+/*jshint esversion: 6 */
+import React, { Fragment, useState, useEffect } from "react";
+import isAccidentalNote from "./utils/isAccidentalNote";
 import { getKeyboardShortcutsForNote } from "./utils/getKeyboardShortcutsForNote";
-import InstrumentAudio from "./Keyboard/InstrumentAudio"
+import InstrumentAudio from "./Keyboard/InstrumentAudio";
 import getNotesBetween from "./utils/getNotesBetween";
 
 const isRegularKey = event => {
   return !event.ctrlKey && !event.metaKey && !event.shiftKey;
 };
-
-const Instrument = ({ 
+const Instrument = ({
   instrumentName,
   startNote,
   endNote,
   renderPianoKey,
   keyboardMap
- }) => {
+}) => {
   const notes = getNotesBetween(startNote, endNote);
 
   const [state, setState] = useState({
     notesPlaying: []
   });
 
-  useEffect (() => {
+  useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener("keyup", handleKeyUp);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getNoteFromKeyboardKey = keyboardKey => {
@@ -32,22 +31,15 @@ const Instrument = ({
   };
 
   const handleKeyDown = e => {
-    // eslint-disable-next-line no-undef
     if (isRegularKey(e) && !e.repeat) {
       const note = getNoteFromKeyboardKey(e.key);
       if (note) {
-        setState({
-          ...state,
-          notesPlaying: state.notesPlaying.filter(
-            notePlaying => notePlaying !== note 
-          )
-        })
+        setState({ ...state, notesPlaying: [...state.notesPlaying, note] });
       }
     }
-  }
+  };
 
   const handleKeyUp = e => {
-    // eslint-disable-next-line no-undef
     if (isRegularKey(e) && !e.repeat) {
       const note = getNoteFromKeyboardKey(e.key);
       if (note) {
@@ -56,11 +48,10 @@ const Instrument = ({
           notesPlaying: state.notesPlaying.filter(
             notePlaying => notePlaying !== note
           )
-        })
+        });
       }
     }
-  }
-
+  };
 
   const onPlayNoteStart = note => {
     setState({ ...state, notesPlaying: [...state.notesPlaying, note] });
@@ -69,34 +60,34 @@ const Instrument = ({
   const onPlayNoteEnd = note => {
     setState({
       ...state,
-      notesPlaying:state.notesPlaying.filter(
+      notesPlaying: state.notesPlaying.filter(
         notePlaying => notePlaying !== note
       )
-    })
+    });
   };
-  
 
-  // rendering piano keys
+  //rendering piano keys
   return (
     <Fragment>
       {notes.map(note => {
         return (
-        <Fragment key={note}>
-          {renderPianoKey({
-            note,
-            isAccidentalNote: isAccidentalNote(note),
-            isNotePlaying: state.notesPlaying.includes(note),
-            startPlayingNote: () => onPlayNoteStart(note),
-            stopPlayingNote: () => onPlayNoteEnd(note),
-            keyboardShortcut: getKeyboardShortcutsForNote(keyboardMap, note) 
-          })}
-        </Fragment>
-      );
-    })}
+          <Fragment key={note}>
+            {renderPianoKey({
+              note,
+              isAccidentalNote: isAccidentalNote(note),
+              isNotePlaying: state.notesPlaying.includes(note),
+              startPlayingNote: () => onPlayNoteStart(note),
+              stopPlayingNote: () => onPlayNoteEnd(note),
+              keyboardShortcut: getKeyboardShortcutsForNote(keyboardMap, note)
+            })}
+          </Fragment>
+        );
+      })}
+
       <InstrumentAudio
-      instrumentName={instrumentName}
-      notes={state.notesPlaying} 
-    />
+        instrumentName={instrumentName}
+        notes={state.notesPlaying}
+      />
     </Fragment>
   );
 };
