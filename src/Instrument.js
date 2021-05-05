@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import InstrumentAudio from "./Keyboard/InstrumentAudio"
 import getNotesBetween from "./utils/getNotesBetween";
 
